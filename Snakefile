@@ -1,0 +1,44 @@
+rule dms:
+    message: "calculating dms values"
+    input:
+        nt = "results/nt-muts_{subtype}_ha.json",
+        summary = "data/summary.csv",
+        dms_config = "config/dms_config.tsv",
+        auspice_config = files.auspice_config
+    output:
+        dms_annotations = "results/dms-annotations_{subtype}_ha.json",
+        mutation_summary = "results/dms-mutations-summary_{subtype}_ha.json",
+        mutation_list = "results/dms-mutations-list_{subtype}_ha.json",
+        auspice_config = "config/auspice_config_{subtype}_updated.json"
+    params:
+        site_header = "sequential_site",
+        h3_site_header = "site"
+    shell:
+        """
+        python scripts/annotate-dms.py \
+            --nt {input.nt} \
+            --summary {input.summary} \
+            --site_header {params.site_header} \
+            --h3_site_header {params.h3_site_header} \
+            --dms_config {input.dms_config} \
+            --auspice_config {input.auspice_config} \
+            --output_totals {output.dms_annotations} \
+            --output_summary {output.mutation_summary} \
+            --output_list {output.mutation_list} \
+            --output_auspice_config {output.auspice_config} \
+        """
+
+rule dms_clean:
+    message: "Removing unwanted color-by options"
+    input:
+        dms_config = "config/dms_config.tsv",
+        auspice_json = rules.export.output.auspice_json
+    output:
+        auspice_json = "auspice/flu_avian_{subtype}_{segment}.json"
+    shell:
+        """
+        python scripts/dms-clean.py \
+            --dms_config {input.dms_config} \
+            --auspice_json {input.auspice_json} \
+            --auspice_json_output {output.auspice_json}
+        """
