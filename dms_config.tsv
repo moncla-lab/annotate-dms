@@ -1,0 +1,6 @@
+# csv header	filter	display name	internal key
+mouse sera escape	+	Mouse sera escape relative to A/American-Wigeon/South-Carolina/2021	mouse_sera_escape
+ferret sera escape	+	Ferret sera escape relative to A/American-Wigeon/South-Carolina/2021	ferret_sera_escape
+stability	/	HA stability	HA_stability
+entry in 293T cells	/	Cell entry	cell_entry
+SA26 usage increase	/	Increase in a2,6 sialic acid usage	SA26_usage_increase
